@@ -3,39 +3,29 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Modules;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Orchard.DisplayManagement;
 using Orchard.DisplayManagement.Handlers;
 using Orchard.Environment.Navigation;
-using Orchard.Queries.Drivers;
-using Orchard.Queries.Recipes;
-using Orchard.Queries.Services;
-using Orchard.Recipes;
+using Orchard.Queries.Sql.Drivers;
+using Orchard.Security.Permissions;
 
-namespace Orchard.Queries
+namespace Orchard.Queries.Sql
 {
     /// <summary>
     /// These services are registered on the tenant service collection
     /// </summary>
+    [Feature("Orchard.Queries.Sql")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IPermissionProvider, Permissions>();
+            services.AddScoped<IDisplayDriver<Query>, SqlQueryDisplayDriver>();
+            services.AddScoped<IQuerySource, SqlQuerySource>();
             services.AddScoped<INavigationProvider, AdminMenu>();
-            services.AddScoped<IQueryManager, QueryManager>();
-            services.AddScoped<IDisplayManager<Query>, DisplayManager<Query>>();
-
-            services.AddScoped<IDisplayDriver<Query>, QueryDisplayDriver>();
-            services.AddRecipeExecutionStep<QueryStep>();
         }
 
         public override void Configure(IApplicationBuilder app, IRouteBuilder routes, IServiceProvider serviceProvider)
         {
-            routes.MapAreaRoute(
-                name: "Api.Queries.Query",
-                areaName: "Orchard.Queries",
-                template: "api/queries/{name}",
-                defaults: new { controller = "Api", action = "Query" }
-            );
         }
     }
 }
