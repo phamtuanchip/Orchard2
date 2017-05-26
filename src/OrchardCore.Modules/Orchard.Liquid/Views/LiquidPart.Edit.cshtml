@@ -1,14 +1,14 @@
 @using Orchard.Liquid.ViewModels;
 @model LiquidPartViewModel
 
-<style asp-src="/Orchard.Liquid/codemirror/lib/codemirror.css"></style>
-<script asp-src="/Orchard.Liquid/codemirror/lib/codemirror.js" depends-on="admin" at="Foot"></script>
-<script asp-src="/Orchard.Liquid/codemirror/addon/mode/simple.js" at="Foot"></script>
-<script asp-src="/Orchard.Liquid/codemirror/addon/mode/multiplex.js" at="Foot"></script>
-<script asp-src="/Orchard.Liquid/codemirror/mode/xml/xml.js" at="Foot"></script>
+<script asp-src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.26.0/codemirror.min.js" depends-on="admin" at="Foot"></script>
+<script asp-src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.26.0/mode/javascript/javascript.min.js" at="Foot"></script>
 
-<style asp-src="/Orchard.Liquid/codemirror/mode/liquid/liquid.css"></style>
-<script asp-src="/Orchard.Liquid/codemirror/mode/liquid/liquid.js" at="Foot"></script>
+<script asp-src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.26.0/addon/mode/simple.min.js" at="Foot"></script>
+<script asp-src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.26.0/addon/mode/multiplex.min.js" at="Foot"></script>
+<script asp-src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.26.0/mode/xml/xml.min.js" at="Foot"></script>
+
+<script asp-src="/Orchard.Liquid/codemirror/liquid.js" at="Foot"></script>
 
 <fieldset class="form-group">
     <label asp-for="Liquid">@T["Body"]</label>
@@ -22,10 +22,11 @@ $(function () {
         lineNumbers: true,
         styleActiveLine: true,
         matchBrackets: true,
-        mode: {name: "liquid", base: "text/html"},
+        mode: { name: "liquid" },
       });
 
-    editor.on('change',function (cm) {
+    editor.on('change', function (cm) {
+        document.getElementById('@Html.IdFor(x => x.Liquid)').value = cm.getValue();
         $(document).trigger('contentpreview:render');
     });
 });

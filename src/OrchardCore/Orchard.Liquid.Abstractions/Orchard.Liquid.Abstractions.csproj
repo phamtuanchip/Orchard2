@@ -6,6 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotLiquid" Version="2.0.64" />
+    <PackageReference Include="DotLiquid" Version="2.0.96" />
   </ItemGroup>
 </Project>

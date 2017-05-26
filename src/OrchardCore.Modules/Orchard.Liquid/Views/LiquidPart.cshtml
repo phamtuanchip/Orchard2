@@ -21,7 +21,8 @@
         Url = new UrlDrop(Url)
     };
 
-    var html = LiquidManager.GetTemplate(liquid).Render(DotLiquid.Hash.FromAnonymousObject(model));
+    var template = LiquidManager.GetTemplate(liquid);
+    var html = template == null ? "" : template.Render(DotLiquid.Hash.FromAnonymousObject(model));
 }
 
-@Html.Raw(html)
+@Html.Raw(html ?? "")

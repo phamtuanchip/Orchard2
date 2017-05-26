@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Html;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.Models;
@@ -25,9 +25,16 @@ namespace Orchard.Liquid.Handlers
             context.For<BodyAspect>(bodyAspect =>
             {
                 var template = _liquidManager.GetTemplate(part.Liquid);
-                var html = template.Render();
 
-                bodyAspect.Body = new HtmlString(html);
+                if (template == null)
+                {
+                    bodyAspect.Body = HtmlString.Empty;
+                }
+                else
+                {
+                    var html = template.Render();
+                    bodyAspect.Body = new HtmlString(html);
+                }
             });
         }
     }

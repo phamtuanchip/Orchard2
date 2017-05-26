@@ -1,4 +1,4 @@
-﻿using DotLiquid;
+using DotLiquid;
 using System.Collections.Concurrent;
 
 namespace Orchard.Liquid
@@ -13,6 +13,11 @@ namespace Orchard.Liquid
         
         public Template GetTemplate(string source)
         {
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return null;
+            }
+
             if (_templates.TryGetValue(source, out var template))
             {
                 return template;
@@ -22,6 +27,7 @@ namespace Orchard.Liquid
                 try
                 {
                     template = Template.Parse(source);
+                    template.MakeThreadSafe();
                     template = _templates.GetOrAdd(source, template);
                     return template;
                 }
@@ -29,9 +35,7 @@ namespace Orchard.Liquid
                 {
                     return Empty;
                 }
-            }
-
-            
+            }            
         }
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using DotLiquid;
+using Newtonsoft.Json.Linq;
 using Orchard.Queries;
 
 namespace Orchard.Liquid.Drops
@@ -23,6 +25,13 @@ namespace Orchard.Liquid.Drops
             }
 
             var result = _queryManager.ExecuteQueryAsync(query, new Dictionary<string, object>()).GetAwaiter().GetResult();
+
+            if (result is IEnumerable<JObject>)
+            {
+                // BUG: Somehow Liquid doesn't accept JObject collections directly unlike ContentItem.
+                return ((IEnumerable<JObject>)result).Select(x => new JTokenDrop(x)).ToArray();
+            }
+
             return result;
         }
 
