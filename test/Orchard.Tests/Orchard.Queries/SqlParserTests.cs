@@ -2,7 +2,7 @@ using System.Linq;
 using Orchard.Queries.Sql;
 using Xunit;
 using YesSql;
-using YesSql.Providers.SqlServer;
+using YesSql.Provider.SqlServer;
 
 namespace Orchard.Tests.Orchard.Queries
 {
